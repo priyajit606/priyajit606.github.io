@@ -1,507 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spirite Box - Learning Platform</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirite Box</title>
 
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml;utf8,
-  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-    <rect width='100' height='100' fill='%23000'/>
-    <text x='50' y='62' font-size='46' fill='%2300ccff' text-anchor='middle' font-family='Arial' font-weight='700'>SB</text>
-  </svg>">
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ccff">
 
-  <style>
-    /* ====== Root Colors & Variables ====== */
-    :root{
-      --accent: #00ccff;
-      --accent-dark: #0099cc;
-      --bg-overlay: rgba(0,0,0,0.85);
-      --glass: rgba(0,0,0,0.6);
-      --glass-strong: rgba(0,0,0,0.7);
-      --light-bg: #f5f5f5;
-      --light-text: #222;
-    }
+<style>
+:root{
+  --accent:#00ccff;
+  --bg-dark:rgba(0,0,0,0.85);
+  --glass:rgba(0,0,0,0.6);
+  --light-bg:#f5f5f5;
+  --light-text:#222;
+}
 
-    html, body{
-      height:100%;
-      margin:0;
-      padding:0;
-      font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1523580846011-d3a5bc25702b') no-repeat center center fixed;
-      background-size: cover;
-      color: #f0f0f0;
-      transition: all .4s ease;
-    }
+*{box-sizing:border-box;}
+html,body{margin:0;font-family:Arial,sans-serif;}
 
-    body.light-mode{
-      background:#e0e0e0;
-      color: var(--light-text);
-    }
+body{
+  background:url("https://images.unsplash.com/photo-1523580846011-d3a5bc25702b") center/cover fixed;
+  color:#fff;
+  transition:.4s;
+}
 
-    /* ====== Loading Screen ====== */
-    #loadingScreen {
-      position: fixed;
-      top:0; left:0; width:100%; height:100%;
-      background: var(--bg-overlay);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      z-index:999;
-      flex-direction:column;
-      transition: opacity .4s ease;
-    }
+body.light{
+  background:#eaeaea;
+  color:var(--light-text);
+}
 
-    #loadingScreen .logo{
-      font-size:40px;
-      color: var(--accent);
-      animation: glow 1.4s infinite alternate;
-    }
+/* ===== LOADER ===== */
+#loader{
+  position:fixed; inset:0;
+  background:var(--bg-dark);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
 
-    @keyframes glow{
-      from{ text-shadow:0 0 8px var(--accent),0 0 12px var(--accent);}
-      to{ text-shadow:0 0 20px var(--accent),0 0 30px var(--accent);}
-    }
+#loader h1{
+  color:var(--accent);
+  animation:glow 1.5s infinite alternate;
+}
 
-    /* ====== Header ====== */
-    header {
-      background-color: var(--bg-overlay);
-      padding: 15px 20px;
-      display:flex;
-      align-items:center;
-      gap:18px;
-      position: relative;
-      z-index: 40;
-      transition: all .3s ease;
-    }
+@keyframes glow{
+  from{text-shadow:0 0 10px var(--accent);}
+  to{text-shadow:0 0 30px var(--accent);}
+}
 
-    .logo{
-      font-weight:800;
-      font-size:24px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+/* ===== HEADER ===== */
+header{
+  display:flex;
+  align-items:center;
+  padding:12px 16px;
+  background:var(--bg-dark);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
 
-    .logo .symbol{
-      font-size:18px;
-      background: linear-gradient(90deg,var(--accent),#66e6ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 4px 12px rgba(0,204,255,0.35));
-      animation: glow 1.6s infinite alternate;
-    }
+.logo{
+  font-weight:800;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
 
-    .logo .title{
-      color:white;
-      text-transform:uppercase;
-      font-size:20px;
-      filter: drop-shadow(0 0 10px rgba(0,204,255,0.15));
-    }
+.logo span{
+  color:var(--accent);
+  animation:glow 2s infinite alternate;
+}
 
-    .logo small{
-      display:block;
-      font-size:11px;
-      color:#cfefff;
-      opacity:0.85;
-      margin-top:2px;
-    }
+nav{
+  margin-left:auto;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
 
-    nav{
-      display:flex;
-      align-items:center;
-      gap:15px;
-      margin-left:auto;
-      flex-wrap:wrap;
-    }
+nav a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:bold;
+  position:relative;
+}
 
-    nav a{
-      color: var(--accent);
-      margin:0 8px;
-      text-decoration:none;
-      font-weight:bold;
-      position:relative;
-      transition: all .3s ease;
-    }
+nav a::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-5px;
+  width:0; height:2px;
+  background:var(--accent);
+  transition:.3s;
+}
 
-    nav a:hover{ color:white; }
-    nav a::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:-6px;
-      height:3px;
-      background:transparent;
-      transition:all .25s ease;
-      border-radius:3px;
-    }
+nav a:hover::after{width:100%;}
 
-    nav a:hover::after{
-      background: linear-gradient(90deg,var(--accent),#9ff3ff);
-      transform: translateY(0);
-    }
+/* ===== DROPDOWN ===== */
+.dropdown{position:relative;}
+.dropbtn{
+  background:var(--accent);
+  border:none;
+  padding:8px 12px;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 12px rgba(0,204,255,.5);
+}
 
-    /* ====== Dropdown ====== */
-    .dropdown{
-      position:relative;
-      display:inline-block;
-    }
+.dropdown-content{
+  position:absolute;
+  right:0;
+  top:110%;
+  background:var(--bg-dark);
+  border-radius:8px;
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
+  transition:.3s;
+}
 
-    .dropbtn{
-      background-color: var(--accent);
-      color:black;
-      padding:8px 12px;
-      border:none;
-      cursor:pointer;
-      border-radius:6px;
-      font-weight:bold;
-      transition: all .18s ease;
-      box-shadow: 0 6px 18px rgba(0,204,255,0.12);
-    }
+.dropdown-content a{
+  display:block;
+  padding:10px 14px;
+  color:var(--accent);
+}
 
-    .dropbtn:hover{ transform: translateY(-2px); box-shadow:0 10px 22px rgba(0,204,255,0.18); }
+.dropdown:hover .dropdown-content{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
 
-    .dropdown-content{
-      opacity:0;
-      transform: translateY(-10px);
-      pointer-events:none;
-      transition: all 0.28s cubic-bezier(.2,.9,.2,1);
-      position:absolute;
-      right:0;
-      background-color: var(--bg-overlay);
-      min-width:150px;
-      box-shadow:0 8px 28px rgba(0,0,0,0.6);
-      border-radius:8px;
-      z-index:60;
-      overflow:hidden;
-      backdrop-filter: blur(6px);
-      border:1px solid rgba(255,255,255,0.02);
-    }
+/* ===== TOP AD ===== */
+.top-ad{
+  margin:10px auto;
+  max-width:728px;
+  background:#111;
+  height:90px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 15px rgba(0,204,255,.3);
+}
 
-    .dropdown-content a{
-      color: var(--accent);
-      padding:10px 14px;
-      text-decoration:none;
-      display:block;
-      font-weight:600;
-    }
+/* ===== LAYOUT ===== */
+.site{display:flex;}
 
-    .dropdown-content a:hover{
-      background-color: rgba(255,255,255,0.03);
-      color:white;
-    }
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:260px;
+  background:var(--glass);
+  padding:20px;
+  position:fixed;
+  top:60px; bottom:0; left:0;
+  overflow:auto;
+  transition:.4s;
+  backdrop-filter:blur(8px);
+  box-shadow:0 0 20px rgba(0,204,255,.2);
+}
 
-    .dropdown:hover .dropdown-content,
-    .dropdown:focus-within .dropdown-content{
-      opacity:1;
-      transform: translateY(6px);
-      pointer-events:auto;
-    }
+.sidebar a{
+  display:block;
+  margin:10px 0;
+  color:var(--accent);
+  text-decoration:none;
+  padding:8px;
+  border-radius:6px;
+}
 
-    /* ====== Site Layout ====== */
-    .site{
-      display:flex;
-      min-height: calc(100vh - 120px);
-    }
+.sidebar a:hover{
+  background:rgba(0,204,255,.1);
+  box-shadow:0 0 12px rgba(0,204,255,.4);
+}
 
-    .sidebar{
-      width:260px;
-      min-width:200px;
-      padding:22px 16px;
-      background-color: var(--glass-strong);
-      position: fixed;
-      left:0;
-      top:76px;
-      bottom:0;
-      overflow-y:auto;
-      transform: translateX(-20px);
-      opacity:0;
-      transition: transform 0.6s cubic-bezier(.2,.9,.2,1), opacity .6s ease;
-      box-shadow:4px 0 30px rgba(0,204,255,0.06);
-      z-index:30;
-      border-right:1px solid rgba(255,255,255,0.03);
-      backdrop-filter: blur(6px);
-      border-top-right-radius:12px;
-      border-bottom-right-radius:12px;
-      animation: slideInSidebar 1s forwards;
-    }
+/* ===== LEFT AD ===== */
+.left-ad{
+  margin-top:20px;
+  height:250px;
+  background:#111;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    @keyframes slideInSidebar{
-      0%{ transform: translateX(-30px); opacity:0; }
-      100%{ transform: translateX(0); opacity:1; }
-    }
+/* ===== MAIN ===== */
+.main{
+  margin-left:260px;
+  padding:20px;
+  width:100%;
+  max-width:900px;
+}
 
-    .sidebar.visible{ transform: translateX(0); opacity:1; }
+/* ===== RIGHT AD ===== */
+.right-ad{
+  position:fixed;
+  right:15px;
+  top:140px;
+  width:160px;
+  height:600px;
+  background:#111;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 15px rgba(0,204,255,.3);
+}
 
-    .sidebar h3{ color:#fff; margin-top:0; }
-    .sidebar ul{ padding-left:18px; }
-    .sidebar li{ margin:10px 0; list-style:none; }
-    .sidebar a{
-      color: var(--accent);
-      text-decoration:none;
-      font-weight:600;
-      display:block;
-      padding:8px 10px;
-      border-radius:6px;
-      transition: all .22s ease, box-shadow .22s ease;
-    }
+/* ===== CARD ===== */
+.card{
+  background:var(--glass);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 0 20px rgba(0,204,255,.15);
+  margin-bottom:20px;
+}
 
-    .sidebar a:hover{
-      color:white;
-      background: linear-gradient(90deg, rgba(0,204,255,0.06), rgba(0,204,255,0.02));
-      box-shadow: 0 6px 18px rgba(0,204,255,0.06);
-      transform: translateX(4px);
-    }
+/* ===== BOTTOM AD ===== */
+.bottom-ad{
+  height:90px;
+  background:#111;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:20px 0;
+}
 
-    .main-wrap{
-      margin-left:300px;
-      padding:20px;
-      width:calc(100% - 300px);
-      transition: all .3s ease;
-    }
+/* ===== FLOAT BUTTONS ===== */
+.float{
+  position:fixed;
+  right:18px;
+  padding:12px 18px;
+  border-radius:999px;
+  background:var(--accent);
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(0,204,255,.6);
+}
 
-    .content{
-      background: var(--glass);
-      border-radius:10px;
-      padding:18px;
-      margin-bottom:20px;
-      box-shadow: 0 0 16px rgba(0,204,255,0.06);
-      border:1px solid rgba(255,255,255,0.05);
-      transition: all .3s ease;
-    }
+#topBtn{bottom:30px;}
+#themeBtn{bottom:90px;}
+#contactBtn{bottom:150px;}
 
-    .content:hover{ box-shadow: 0 0 28px rgba(0,204,255,0.12); }
+/* ===== MOBILE ===== */
+#menuBtn{
+  display:none;
+  font-size:22px;
+  background:none;
+  border:none;
+  color:var(--accent);
+  margin-right:10px;
+}
 
-    .links a{
-      display:block;
-      margin:10px 0;
-      color: var(--accent);
-      text-decoration:none;
-      transition: all .25s ease;
-    }
-
-    .links a:hover{ color:white; text-decoration:underline; }
-
-    footer{
-      background-color: var(--bg-overlay);
-      color:#ccc;
-      text-align:center;
-      padding:20px;
-      margin-top:28px;
-      border-top:1px solid rgba(255,255,255,0.02);
-      border-radius:8px;
-    }
-
-    /* Floating Buttons */
-    .float-contact, .float-top, .toggle-theme{
-      position:fixed;
-      right:22px;
-      padding:10px 16px;
-      border-radius:999px;
-      font-weight:700;
-      cursor:pointer;
-      z-index:80;
-      transition: all .18s ease;
-      box-shadow:0 10px 28px rgba(0,204,255,0.12);
-    }
-
-    .float-contact{ bottom:92px; background:linear-gradient(180deg,var(--accent),#7fe9ff); color:#00121a; }
-    .float-top{ bottom:20px; background:transparent; border:2px solid rgba(255,255,255,0.06); color:var(--accent); }
-    .toggle-theme{ bottom:160px; background:linear-gradient(180deg,#ffcc00,#ffd800); color:#00121a; }
-
-    .float-contact:hover, .float-top:hover, .toggle-theme:hover{
-      transform:translateY(-4px);
-      box-shadow:0 16px 36px rgba(0,204,255,0.18);
-    }
-
-    /* Sidebar Toggle for mobile */
-    #sidebarToggle{ position:fixed; left:12px; top:14px; background:transparent; border:none; font-size:22px; color:var(--accent); z-index:90; display:none; cursor:pointer; }
-
-    @media(max-width:920px){
-      .sidebar{ transform:translateX(-100%); transition: transform .42s cubic-bezier(.2,.9,.2,1); }
-      .sidebar.visible{ transform:translateX(0); }
-      .main-wrap{ margin-left:0; width:100%; padding:14px; }
-      nav{ gap:10px; justify-content:flex-end; }
-      header{ padding:12px; gap:12px; }
-      #sidebarToggle{ display:block; }
-    }
-
-    @media(max-width:520px){
-      .logo .title{ font-size:16px; }
-      .dropbtn{ padding:7px 10px; font-size:14px; }
-      .sidebar{ width:230px; }
-    }
-
-  </style>
+@media(max-width:900px){
+  #menuBtn{display:block;}
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.show{transform:translateX(0);}
+  .main{margin-left:0;}
+  .right-ad{display:none;} /* hide right ad on mobile */
+}
+</style>
 </head>
+
 <body>
 
-  <!-- Loading Screen -->
-  <div id="loadingScreen">
-    <div class="logo">✨ Spirite Box</div>
-  </div>
+<div id="loader"><h1>✨ Spirite Box</h1></div>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo" aria-hidden="false">
-      <div class="symbol">✨</div>
-      <div>
-        <div class="title">Spirite Box</div>
-        <small>Learning Platform</small>
+<header>
+  <button id="menuBtn">☰</button>
+  <div class="logo"><span>✨</span>Spirite Box</div>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Notes</a>
+    <a href="#">Solutions</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Previous ▼</button>
+      <div class="dropdown-content">
+        <a href="#">2023</a>
+        <a href="#">2024</a>
+        <a href="#">2025</a>
       </div>
     </div>
+  </nav>
+</header>
 
-    <!-- NAV -->
-    <nav aria-label="Main Navigation">
-      <a href="https://www.spiritebox-homepage.com" target="_blank">Home</a>
-      <a href="https://www.spiritebox-courses.com" target="_blank">Notes</a>
-      <a href="https://cbse.gov.in" target="_blank">Solutions</a>
+<!-- TOP AD -->
+<div class="top-ad">Top Ad Space</div>
 
-      <div class="dropdown">
-        <button class="dropbtn">Previous Papers ▼</button>
-        <div class="dropdown-content">
-          <a href="#">2023</a>
-          <a href="#">2024</a>
-          <a href="#">2025</a>
-        </div>
-      </div>
-    </nav>
-  </header>
+<div class="site">
+  <aside class="sidebar" id="sidebar">
+    <h3>Subjects</h3>
+    <a href="#">Math</a>
+    <a href="#">Science</a>
+    <a href="#">English</a>
+    <a href="#">Social Studies</a>
 
-  <!-- SITE LAYOUT -->
-  <div class="site">
-    <aside class="sidebar visible" id="sidebar">
-      <h3>Subjects</h3>
-      <ul>
-        <li><a href="#">Math</a></li>
-        <li><a href="#">Science</a></li>
-        <li><a href="#">English</a></li>
-        <li><a href="#">Social Studies</a></li>
-      </ul>
-      <div class="ad-side" style="margin-top:18px;">
-        <a href="https://your-sidebar-ad.com" target="_blank">
-          <img src="https://via.placeholder.com/300x250?text=Sidebar+Ad" alt="Sidebar Ad">
-        </a>
-      </div>
-    </aside>
+    <!-- LEFT AD -->
+    <div class="left-ad">Left Ad</div>
+  </aside>
 
-    <main class="main-wrap">
-      <div class="ad-banner">
-        <a href="https://your-top-ad-link.com" target="_blank">
-          <img src="https://via.placeholder.com/728x90?text=Top+Banner+Ad" alt="Top Banner Ad">
-        </a>
-      </div>
+  <main class="main">
+    <div class="card">
+      <h2>Welcome to Spirite Box</h2>
+       <p>Lets Bit YOUR GOALS.</p>
+        <H1>CBSE CLASS 9TH ICT Notes -:</H1>
+         <h2>Introduction to IT and ITES industry</h2>
+          <h3>1. Introduction to ICT</h3>
+           <h4>✨Definition:</h4>
+            <h5>ICT (Information and Communication Technologies) are tools</h5>
+             <h5>for creating, storing, managing, and communicating digital</h5>
+              <h5>information,revolutionizing how we interact. </h5>
+               <h4>✨ IT vs. ITeS Industry: </h4>
+                <h5>Information Technology (IT): Using computers and software </h5>
+                 <h5>to manage data (store, retrieve, manipulate).</h5>
+                  <h5>IT Enabled Services (ITeS): Services provided remotely using </h5>
+                   <h5>IT, like BPO (Business Process Outsourcing), KPO (Knowledge </h5>
+                    <h5>Process Outsourcing). </h5> <h4>✨ Importance & Applications of ICT:</h4>
+                     <h5>➡️Communication: Instant global messaging via social media, apps, email.</h5>
+                      <h5>➡️Education: E-learning, online resources, digital classrooms.</h5>
+                       <h5>➡️Healthcare: Computerized diagnostics (CAT scans), patient monitoring.</h5>
+                        <h5>➡️Business/Marketing: Online ads, performance tracking, e-commerce.</h5>
+                         <h5>➡️Government (E-Governance): Online services, public safety.</h5>
+                          <h5>➡️Economy: Drives economic growth and creates jobs.</h5>
+    </div>
 
-      <div class="container">
-        <div class="content">
-          <h2>Welcome to Spirite Box Learning</h2>
-          <p>Lets Bit YOUR GOALS.</p>
-          <div class="ad-in-content">
-            <a href="https://your-middle-ad.com" target="_blank">
-              <img src="https://via.placeholder.com/600x120?text=In+Content+Ad" alt="In Content Ad">
-            </a>
-          </div>
+    <!-- BOTTOM AD -->
+    <div class="bottom-ad">Bottom Ad</div>
+  </main>
+</div>
 
-          <h3>Featured Topics</h3>
-          <ul>
-            <li>NCERT Solutions</li>
-            <li>Practice Quizzes</li>
-            <li>Video Lessons</li>
-            <li>Previous Year Papers</li>
-          </ul>
+<!-- RIGHT AD -->
+<div class="right-ad">Right Ad</div>
 
-          <h3>Useful Links</h3>
-          <div class="links">
-            <a href="https://cbse.gov.in" target="_blank">class 10th</a>
-            <a href="file:///C:/Users/BIRANCHI/Desktop/Spirite%20Box/PJN.html" target="_blank">class 9th</a>
-            <a href="https://khanacademy.org" target="_blank">class 8th</a>
-            <a href="https://byjus.com" target="_blank">class 7th</a>
-            <a href="https://byjus.com" target="_blank">class 6th</a>
-          </div>
-        </div>
-      </div>
+<button class="float" id="topBtn">Top</button>
+<button class="float" id="themeBtn">☀️</button>
+<button class="float" id="contactBtn">Contact</button>
 
-      <footer>
-        &copy; 2025 Spirite Box. All rights reserved.
-        <div class="ad-footer" style="margin-top:10px;">
-          <a href="https://your-footer-ad.com" target="_blank">
-            <img src="https://via.placeholder.com/728x90?text=Footer+Ad" alt="Footer Ad">
-          </a>
-        </div>
-      </footer>
-    </main>
-  </div>
+<script>
+window.onload=()=>document.getElementById("loader").style.display="none";
 
-  <!-- Floating Buttons -->
-  <button class="float-contact" id="contactBtn" title="Contact us">Contact</button>
-  <button class="float-top" id="toTopBtn" title="Scroll to top">Top</button>
-  <button class="toggle-theme" id="themeBtn" title="Toggle Dark/Light">☀️</button>
-  <button id="sidebarToggle">☰</button>
+const menuBtn=document.getElementById("menuBtn");
+const sidebar=document.getElementById("sidebar");
+menuBtn.onclick=()=>sidebar.classList.toggle("show");
 
-  <script>
-    document.addEventListener('DOMContentLoaded', ()=>{
-      // ====== Loading Screen
-      const loader = document.getElementById('loadingScreen');
-      setTimeout(()=> loader.style.opacity='0',800);
-      setTimeout(()=> loader.style.display='none',1200);
-
-      // ====== Sidebar animation
-      const sidebar = document.getElementById('sidebar');
-      setTimeout(()=> sidebar.classList.add('visible'),220);
-
-      // ====== Floating Buttons
-      const contactBtn = document.getElementById('contactBtn');
-      contactBtn.addEventListener('click', ()=> window.location.href='mailto:contact@spiritebox.example?subject=Spirite%20Box%20Contact');
-
-      const topBtn = document.getElementById('toTopBtn');
-      topBtn.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
-      window.addEventListener('scroll', ()=> topBtn.style.display = window.scrollY>260 ? 'inline-block':'none');
-
-      // ====== Theme Toggle
-      const themeBtn = document.getElementById('themeBtn');
-      themeBtn.addEventListener('click', ()=>{
-        document.body.classList.toggle('light-mode');
-      });
-
-      // ====== Dropdown click for touch devices
-      document.querySelectorAll('.dropdown > .dropbtn').forEach(btn=>{
-        btn.addEventListener('click',(ev)=>{
-          ev.stopPropagation();
-          const menu = btn.nextElementSibling;
-          const expanded = btn.getAttribute('aria-expanded')==='true';
-          btn.setAttribute('aria-expanded', String(!expanded));
-          if(menu){
-            if(!expanded){
-              menu.style.opacity='1';
-              menu.style.transform='translateY(6px)';
-              menu.style.pointerEvents='auto';
-            } else {
-              menu.style.opacity='';
-              menu.style.transform='';
-              menu.style.pointerEvents='';
-            }
-          }
-        });
-      });
-
-      // ====== Sidebar Toggle mobile
-      const toggle = document.getElementById('sidebarToggle');
-      toggle.addEventListener('click', ()=> sidebar.classList.toggle('visible'));
-      document.addEventListener('click', e=>{
-        if(window.innerWidth<=920){
-          if(!sidebar.contains(e.target) && !toggle.contains(e.target) && sidebar.classList.contains('visible')){
-            sidebar.classList.remove('visible');
-          }
-        }
-      });
-
-      // Initially hide topBtn
-      topBtn.style.display='none';
-    });
-  </script>
+document.getElementById("topBtn").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+document.getElementById("themeBtn").onclick=()=>document.body.classList.toggle("light");
+</script>
 
 </body>
 </html>
