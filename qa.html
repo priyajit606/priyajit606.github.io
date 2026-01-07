@@ -6,7 +6,7 @@
   <meta name="description" content="Upload question image and get answer instantly.">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Ads verification (same as home) -->
+  <!-- Monetag -->
   <meta name="monetag" content="e490d8b0bfdabd4e13a1af15257deb1c">
 </head>
 
@@ -16,15 +16,13 @@
 <h2>📷 Question Image → Answer</h2>
 <p>Upload a clear image of your question</p>
 
-<input type="file" id="img">
+<input type="file" id="img" accept="image/*">
 <button onclick="getAnswer()">Get Answer</button>
 
-<!-- 💰 AD (QnA page top) -->
 <div class="ad-box">Ad Space</div>
 
-<p id="result">Answer will appear here...</p>
+<pre id="result">Answer will appear here...</pre>
 
-<!-- 💰 AD (QnA page bottom) -->
 <div class="ad-box">Ad Space</div>
 
 <a href="index.html" class="card">⬅ Back to Home</a>
@@ -33,6 +31,9 @@
 
 <!-- OCR -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+
+<!-- JS -->
 <script src="qa.js"></script>
+
 </body>
 </html>
