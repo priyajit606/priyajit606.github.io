@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Question to Answer – ToolMint</title>
+  <title>Image to PDF – ToolMint</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Upload question image and get answer instantly.">
+  <meta name="description" content="Upload an image and convert it to PDF instantly.">
   <link rel="stylesheet" href="style.css">
 
   <!-- Monetag -->
@@ -13,15 +13,15 @@
 <body>
 <div class="container fade">
 
-<h2>📷 Question Image → Answer</h2>
-<p>Upload a clear image of your question</p>
+<h2>📷 Image → PDF</h2>
+<p>Upload any image to convert to PDF</p>
 
 <input type="file" id="img" accept="image/*">
-<button onclick="getAnswer()">Get Answer</button>
+<button onclick="convertToPDF()">Convert to PDF</button>
 
 <div class="ad-box">Ad Space</div>
 
-<pre id="result">Answer will appear here...</pre>
+<pre id="result">Converted PDF will be downloaded automatically...</pre>
 
 <div class="ad-box">Ad Space</div>
 
@@ -29,19 +29,48 @@
 
 </div>
 
-<!-- OCR -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+<!-- jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- ✅ Gemini Official JS SDK -->
-<script type="module">
-  import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+<!-- Custom JS -->
+<script>
+async function convertToPDF() {
+  const fileInput = document.getElementById("img");
+  const result = document.getElementById("result");
 
-  // 🔑 APNI AI STUDIO WALI API KEY DAALO YAHAN
-  window.genAI = new GoogleGenerativeAI("AIzaSyDABnelsvpW41WCfjtnoBnCCLKuiGT1fM8");
+  if (!fileInput.files.length) {
+    alert("Please upload an image");
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const imgData = e.target.result;
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    const img = new Image();
+    img.src = imgData;
+    img.onload = function() {
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const ratio = Math.min(pageWidth / img.width, pageHeight / img.height);
+      const width = img.width * ratio;
+      const height = img.height * ratio;
+
+      pdf.addImage(img, "JPEG", 0, 0, width, height);
+      pdf.save("converted.pdf");
+      result.innerText = "PDF downloaded successfully!";
+    };
+  };
+
+  reader.readAsDataURL(file);
+}
 </script>
-
-<!-- Tumhara existing JS -->
-<script src="qa.js"></script>
 
 </body>
 </html>
