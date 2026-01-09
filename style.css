@@ -173,3 +173,43 @@ input{
     font-size:13px;
   }
 }
+/* Container responsive */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+/* Tool cards responsive */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cards a.card {
+  flex: 1 1 calc(50% - 10px); /* mobile: 2 cards per row */
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Media query for very small screens */
+@media (max-width: 480px) {
+  .cards a.card {
+    flex: 1 1 100%; /* Mobile me 1 card per row */
+    font-size: 16px;
+    padding: 15px;
+  }
+}
+
+/* Buttons responsive */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+}
