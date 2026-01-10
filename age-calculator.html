@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Age Calculator – ToolMint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container fade">
+<a class="back" href="index.html">← Back</a>
+
+<div class="tool-box glow">
+<h2>📅 Age Calculator</h2>
+
+<input class="input" type="date" id="dob">
+<button class="btn" onclick="calc()">Calculate Age</button>
+
+<p class="output" id="res"></p>
+</div>
+</div>
+
+<script>
+function calc(){
+ let dob=new Date(dob.value);
+ let diff=Date.now()-dob.getTime();
+ let age=new Date(diff).getUTCFullYear()-1970;
+ res.innerText="Your Age: "+age+" years";
+}
+</script>
+</body>
+</html>

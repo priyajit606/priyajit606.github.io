@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Notice Writer – ToolMint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container fade">
+<a class="back" href="index.html">← Back</a>
+
+<div class="tool-box glow">
+<h2>📢 Notice Writer</h2>
+
+<input class="input" id="org" placeholder="School / Organization Name">
+<input class="input" id="date" placeholder="Date">
+
+<select class="input" id="subMode">
+  <option value="auto">Auto Subject</option>
+  <option value="manual">Manual Subject</option>
+</select>
+
+<input class="input" id="subject" placeholder="Enter Notice Subject">
+
+<textarea class="input" id="msg"
+placeholder="Write the notice content properly (example: All the students are hereby informed that...)"></textarea>
+
+<button class="btn" onclick="gen()">Generate Notice</button>
+
+<pre class="output" id="out"></pre>
+</div>
+</div>
+
+<script>
+function gen(){
+
+let org = document.getElementById("org").value || "________";
+let date = document.getElementById("date").value || "________";
+let msg  = document.getElementById("msg").value || 
+"All concerned are hereby informed that an important event has been scheduled.";
+
+let subjectText;
+if(document.getElementById("subMode").value==="manual" && subject.value){
+  subjectText = subject.value;
+}else{
+  subjectText = "Important Notice";
+}
+
+out.innerText =
+`NOTICE
+
+${org}
+Date: ${date}
+
+Subject: ${subjectText}
+
+${msg}
+
+All are requested to take note of the above information and act accordingly.
+
+By Order
+Authority`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Letter Writer – ToolMint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container fade">
+<a class="back" href="index.html">← Back</a>
+
+<div class="tool-box glow">
+<h2>✉️ Letter Writer</h2>
+
+<select class="input" id="type">
+  <option value="friend">Letter to Friend</option>
+  <option value="teacher">Letter to Teacher</option>
+  <option value="custom">Custom Letter</option>
+</select>
+
+<input class="input" id="name" placeholder="Your Name">
+
+<select class="input" id="subMode">
+  <option value="auto">Auto Subject</option>
+  <option value="manual">Manual Subject</option>
+</select>
+
+<input class="input" id="subject" placeholder="Enter Subject (if manual)">
+
+<textarea class="input" id="body"
+placeholder="Write the main content in detail (example: I hope you are fine. I am writing this letter to inform you about...)"></textarea>
+
+<button class="btn" onclick="gen()">Generate Letter</button>
+
+<pre class="output" id="out"></pre>
+</div>
+</div>
+
+<script>
+function gen(){
+
+let type = document.getElementById("type").value;
+let name = document.getElementById("name").value || "________";
+let body = document.getElementById("body").value || "I am writing this letter to share some important information with you.";
+
+let subjectText;
+if(document.getElementById("subMode").value==="manual" && subject.value){
+  subjectText = subject.value;
+}else{
+  subjectText = type==="friend"
+  ? "Friendly Letter"
+  : "Formal Letter";
+}
+
+let greeting = type==="friend" ? "Dear Friend," : "Respected Sir/Madam,";
+
+out.innerText =
+`Subject: ${subjectText}
+
+${greeting}
+
+I hope this letter finds you in good health and high spirits.
+${body}
+
+I hope you will understand my situation and give your kind consideration.
+
+Thanking you.
+
+Yours sincerely,
+${name}`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Application Writer – ToolMint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container fade">
+<a class="back" href="index.html">← Back</a>
+
+<div class="tool-box glow">
+<h2>📝 Application Writer</h2>
+
+<select class="input" id="type">
+  <option value="leave">Leave Application</option>
+  <option value="sick">Sick Leave Application</option>
+  <option value="custom">Custom Application</option>
+</select>
+
+<input class="input" id="name" placeholder="Your Name">
+<input class="input" id="cls" placeholder="Class / Designation">
+<input class="input" id="school" placeholder="School / Office Name">
+
+<select class="input" id="subMode">
+  <option value="auto">Auto Subject</option>
+  <option value="manual">Manual Subject</option>
+</select>
+
+<input class="input" id="subject" placeholder="Enter Subject (if manual)">
+
+<textarea class="input" id="reason"
+placeholder="Write the reason properly (example: I am suffering from stomach pain and the doctor has advised me to take rest.)"></textarea>
+
+<button class="btn" onclick="gen()">Generate Application</button>
+
+<pre class="output" id="out"></pre>
+</div>
+</div>
+
+<script>
+function gen(){
+
+let type = document.getElementById("type").value;
+let name = document.getElementById("name").value || "________";
+let cls  = document.getElementById("cls").value || "________";
+let school = document.getElementById("school").value || "________";
+let reason = document.getElementById("reason").value || "some personal reasons";
+
+let subjectText;
+if(document.getElementById("subMode").value==="manual" && subject.value){
+  subjectText = subject.value;
+}else{
+  subjectText = type==="sick"
+  ? "Application for Sick Leave"
+  : "Application for Leave";
+}
+
+out.innerText =
+`To,
+The Principal,
+${school}
+
+Subject: ${subjectText}
+
+Respected Sir/Madam,
+
+I respectfully state that I am ${name}, a student of class ${cls} of your esteemed institution.
+I am writing this application to inform you that ${reason}
+
+Due to the above-mentioned reason, I will not be able to attend my classes for the mentioned period.
+Therefore, I kindly request you to grant me leave for the same.
+
+I shall be very thankful to you for your kind consideration.
+
+Thanking you.
+
+Yours obediently,
+${name}
+Class: ${cls}`;
+}
+</script>
+</body>
+</html>

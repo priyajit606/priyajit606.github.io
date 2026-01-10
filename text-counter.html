@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Text Counter – ToolMint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container fade">
+<a class="back" href="index.html">← Back</a>
+
+<div class="tool-box glow">
+<h2>📝 Text Counter</h2>
+
+<textarea class="input" id="text" placeholder="Type or paste text..." oninput="count()"></textarea>
+
+<p class="info">Words: <span id="w">0</span></p>
+<p class="info">Characters: <span id="c">0</span></p>
+</div>
+</div>
+
+<script>
+function count(){
+ let t=text.value;
+ c.innerText=t.length;
+ w.innerText=t.trim()?t.trim().split(/\s+/).length:0;
+}
+</script>
+</body>
+</html>

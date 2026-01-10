@@ -3,29 +3,23 @@
 <head>
 <title>ToolMint – Free Online Tools</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ToolMint offers free image, PDF, YouTube and gaming tools online.">
+<meta name="description" content="ToolMint offers free image, PDF, YouTube, text and gaming tools online.">
 <link rel="stylesheet" href="style.css">
 
-<!-- Monetag / Ads -->
 <meta name="monetag" content="e490d8b0bfdabd4e13a1af15257deb1c">
-
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
-
+<link rel="icon" href="favicon.png">
 </head>
+
 <body>
 <div class="container fade">
 
 <header>
-  <h1 id="title">ToolMint</h1>
-  <p id="subtitle">All-in-One Free Online Utility Tools</p>
+  <h1>ToolMint</h1>
+  <p>Free Online Tools – No Login, No Watermark</p>
 </header>
 
-<!-- 🔍 Search -->
 <input class="search" type="text" placeholder="Search tool..." onkeyup="searchTools(this.value)">
 
-<!-- 💰 TOP AD -->
 <div class="ad-box">Top Ad Space</div>
 
 <div class="tool-box glow">
@@ -36,20 +30,28 @@
 <div class="cards tools">
   <a class="card" href="image-compressor.html">Image Compressor</a>
   <a class="card" href="image-resizer.html">Image Resizer</a>
-  <a class="card" href="image-size-checker.html">Image Size Checker</a>
   <a class="card" href="jpg-to-png.html">JPG to PNG</a>
+  <a class="card" href="pdf-tools.html">Image to PDF</a>
 </div>
 </div>
 
-<!-- PDF -->
+<!-- TEXT -->
 <div class="section">
-<h2>📄 PDF Tools</h2>
+<h2>📝 Text Tools</h2>
 <div class="cards tools">
-  <a class="card" href="pdf-tools.html">PDF Size Checker</a>
+  <a class="card" href="text-counter.html">Text Counter</a>
 </div>
 </div>
 
-<!-- YOUTUBE -->
+<!-- CALCULATOR -->
+<div class="section">
+<h2>📊 Calculator</h2>
+<div class="cards tools">
+  <a class="card" href="age-calculator.html">Age Calculator</a>
+</div>
+</div>
+
+<!-- YOUTUBE (NEW WORKING) -->
 <div class="section">
 <h2>▶ YouTube Tools</h2>
 <div class="cards tools">
@@ -59,31 +61,28 @@
 
 <!-- GAMING -->
 <div class="section">
-<h2>🎮 Gaming Tools</h2>
+<h2>🎮 Minecraft Tools</h2>
 <div class="cards tools">
   <a class="card" href="minecraft-name.html">Minecraft Name Generator</a>
 </div>
 </div>
 
-<!-- NEW: Image → PDF Tool LINK -->
 <div class="section">
-<h2>📷 Image to PDF Tool</h2>
+<h2>📝 Writing Tools</h2>
 <div class="cards tools">
-  <a class="card" href="qa.html">Upload Image → Convert to PDF</a>
+  <a class="card" href="application-writer.html">Application Writer</a>
+  <a class="card" href="letter-writer.html">Letter Writer</a>
+  <a class="card" href="notice-writer.html">Notice Writer</a>
 </div>
 </div>
 
 </div>
 
-<!-- 💰 BOTTOM AD -->
 <div class="ad-box">Bottom Ad Space</div>
 
-<footer style="text-align:center;font-size:13px;opacity:.7">
-© 2026 ToolMint
-</footer>
+<footer>© 2026 ToolMint</footer>
 
 <script>
-// Search
 function searchTools(val){
   val = val.toLowerCase();
   document.querySelectorAll(".tools a").forEach(a=>{
