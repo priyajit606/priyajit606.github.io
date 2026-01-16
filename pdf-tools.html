@@ -1,28 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>PDF Tools Online – Merge, Split & Convert | Wexla Tools</title>
-<meta name="description" content="All-in-one PDF tools online: merge, split, convert, compress PDFs for free. Quick and secure PDF processing.">
+<meta charset="UTF-8">
+<title>Image to PDF Converter – Free & Fast | Wexla Tools</title>
+<meta name="description" content="Convert images to PDF online for free. Fast, secure & mobile friendly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f6f8;
+}
+.container{
+  max-width:500px;
+  margin:auto;
+  padding:15px;
+}
+.back{
+  text-decoration:none;
+  color:#333;
+}
+.tool-box{
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+.tool-box h2{
+  margin-bottom:15px;
+}
+input[type=file]{
+  width:100%;
+  margin-bottom:15px;
+}
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:6px;
+  background:#4CAF50;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+button:hover{
+  background:#43a047;
+}
+#download{
+  display:block;
+  margin-top:15px;
+  text-decoration:none;
+  color:#2196F3;
+  font-weight:bold;
+}
+.ad-box{
+  background:#e0e0e0;
+  margin:15px 0;
+  padding:15px;
+  text-align:center;
+  border-radius:6px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="container fade">
+<div class="container">
 <a class="back" href="index.html">← Back</a>
 
-<div class="tool-box glow">
-<h2>PDF Size Checker</h2>
-<input type="file" accept="application/pdf" id="pdf">
-<div id="res"></div>
-</div>
+<div class="ad-box">Ad Space</div>
+
+<div class="tool-box">
+<h2>Image to PDF Converter</h2>
+
+<input type="file" id="img" accept="image/*" multiple>
+<button onclick="makePDF()">Convert to PDF</button>
+
+<a id="download"></a>
 </div>
 
+<div class="ad-box">Ad Space</div>
+</div>
+
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
-document.getElementById("pdf").onchange=function(){
- let f=this.files[0];
- document.getElementById("res").innerText=
- "PDF Size: "+(f.size/1024/1024).toFixed(2)+" MB";
+async function makePDF(){
+  const files = document.getElementById("img").files;
+  if(!files.length){
+    alert("Please select image(s)");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+
+  for(let i=0;i<files.length;i++){
+    const imgData = await readImage(files[i]);
+    const img = new Image();
+    img.src = imgData;
+
+    await new Promise(res=>img.onload=res);
+
+    const w = pdf.internal.pageSize.getWidth();
+    const h = (img.height * w) / img.width;
+
+    if(i>0) pdf.addPage();
+    pdf.addImage(img, "JPEG", 0, 0, w, h);
+  }
+
+  const link = document.getElementById("download");
+  link.href = pdf.output("bloburl");
+  link.download = "images.pdf";
+  link.innerText = "Download PDF";
+}
+
+function readImage(file){
+  return new Promise(res=>{
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.readAsDataURL(file);
+  });
 }
 </script>
 
